@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+  meh:
+    build: 
+      context: ..
+      dockerfile: ./docker/local/Dockerfile
+    ports:
+      - '8080:8080'
+    env_file:
+      - ./env/local.env
+    volumes:
+      - "..:/app"
+    links:
+      - localstack
+    command: make run
+  db:
+    image: mysql:5.7
+    platform: linux/x86_64
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_USER: "dev"
+      MYSQL_PASSWORD: "dev"
+      MYSQL_TCP_PORT: 3306
+    command: mysqld --innodb-file-format=Barracuda --innodb-file-format-max=Barracuda --innodb-file-per-table=true --innodb-large-prefix=true
+  db_test:
+    image: mysql:5.7
+    platform: linux/x86_64
+    ports:
+      - "3307:3307"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_USER: "test"
+      MYSQL_PASSWORD: "test"
+      MYSQL_TCP_PORT: 3307
+    command: mysqld --innodb-file-format=Barracuda --innodb-file-format-max=Barracuda --innodb-file-per-table=true --innodb-large-prefix=true
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    ports:
+      - "8083:8080"
+    volumes:
+      - ../gen/resources/openapi:/usr/share/nginx/html/openapi
+    environment:
+      API_URL: openapi/v1.yaml

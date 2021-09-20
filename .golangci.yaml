@@ -1,0 +1,50 @@
+linters:
+  enable:
+    - cyclop
+    - revive
+    - govet
+    - gocritic
+    - asciicheck
+    - bodyclose
+    - errorlint
+    - durationcheck
+    - exhaustive
+    - dupl
+    - exportloopref
+    - unconvert
+    - testpackage
+    - wastedassign
+    - predeclared
+    - nolintlint
+    - noctx
+    - makezero
+    - gosec
+    - forcetypeassert
+    - goconst
+    - tagliatelle
+    - unparam
+    - gocognit
+    - nestif
+    - goimports
+
+linters-settings:
+  cyclop:
+    max-complexity: 40
+  govet:
+    check-shadowing: true
+  gocritic:
+    enabled-tags:
+      - opinionated
+  gocognit:
+    min-complexity: 40
+  nestif:
+    min-complexity: 5
+  goconst:
+    min-len: 3
+    min-occurrences: 3
+    ignore-tests: true
+  dupl:
+    threshold: 150
+  goimports:
+    local-prefixes: meh
+      
