@@ -16,7 +16,6 @@ type UserService interface {
 type FollowService interface {
 	Follow(ctx context.Context, from, to user.ID) error
 	Remove(ctx context.Context, from, to user.ID) error
-	Exists(ctx context.Context, from, to user.ID) (bool, error)
 	ListFollowers(ctx context.Context, userID user.ID) ([]user.ID, error)
 }
 

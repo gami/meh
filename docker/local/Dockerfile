@@ -18,8 +18,7 @@ RUN \
 RUN wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.41.1
 RUN go install github.com/cosmtrek/air@latest
 RUN	go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@v1.8.1
-RUN	go install github.com/volatiletech/sqlboiler/v4@v4.6.0
-RUN	go install github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-mysql@v4.6.0
+RUN	go get -u entgo.io/ent/cmd/ent
 RUN go get -u github.com/kyoh86/richgo
 
 WORKDIR /app

@@ -55,16 +55,19 @@ func (u *Meh) Meh(ctx context.Context, input form.CreateMeh) (meh.ID, error) {
 	}
 
 	go func() {
-		fls, err := u.follow.ListFollowers(ctx, input.UserID)
+		ctx = context.Background()
+		targets, err := u.follow.ListFollowers(ctx, input.UserID)
 		if err != nil {
 			log.Println(errors.Wrap(err, "failed to create meh"))
 			return
 		}
 
+		targets = append(targets, input.UserID) // 自分のタイムラインにも表示される
+
 		// なんらかの原因でタイムラインに追加できない投稿があった場合も、
 		// 追加済みのタイムラインや投稿を無効にする必要はなく、
 		// むしろパフォーマンスが重視されるので、ここでのTransactionは不要
-		if err := u.meh.AddToTimeline(ctx, id, fls); err != nil {
+		if err := u.meh.AddToTimeline(ctx, id, targets); err != nil {
 			log.Println(errors.Wrap(err, "failed to create meh"))
 		}
 	}()

@@ -25,7 +25,7 @@ run: ## Run local API server
 
 .PHONY: migrate
 migrate: ## Run migration
-	go run tools/migrate
+	go run ./tools/migrate
 
 .PHONY: migrate-test
 migrate-test: ## Run migration
@@ -48,3 +48,8 @@ lint: ## Run linter
 cover: ## Check coverage
 	APP_ENV=test go test ./... -coverprofile cover.out
 	go tool cover -html=cover.out -o cover.html
+
+reset_local_db: ## Reset local db
+	mysql -uroot -proot -hdb -P3306 -e "DROP DATABASE IF EXISTS meh"
+	mysql -uroot -proot -hdb -P3306 -e "CREATE DATABASE IF NOT EXISTS meh"
+	mysql -uroot -proot -hdb -P3306 -e "GRANT ALL ON meh.* TO 'dev'@'%'"

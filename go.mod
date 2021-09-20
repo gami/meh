@@ -7,6 +7,7 @@ require (
 	github.com/getkin/kin-openapi v0.75.0
 	github.com/go-chi/chi/v5 v5.0.4
 	github.com/go-sql-driver/mysql v1.5.1-0.20200311113236-681ffa848bae
+	github.com/google/go-cmp v0.5.3
 	github.com/pkg/errors v0.9.1
 )
 

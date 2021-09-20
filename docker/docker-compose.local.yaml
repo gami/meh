@@ -11,8 +11,6 @@ services:
       - ./env/local.env
     volumes:
       - "..:/app"
-    links:
-      - localstack
     command: make run
   db:
     image: mysql:5.7
