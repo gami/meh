@@ -44,7 +44,7 @@ func TestMeh_Meh(t *testing.T) {
 			fields: fields{
 				tx: &MockTX{},
 				meh: &MockMehService{
-					CreateFunc: func(ctx context.Context, meh *meh.Meh) (meh.ID, error) {
+					CreateFunc: func(ctx context.Context, meh *meh.Meh, _ Stat) (meh.ID, error) {
 						if meh.UserID != 1 {
 							return 0, errors.New("MockMeh.Create() invalid userid arg")
 						}

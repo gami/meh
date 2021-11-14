@@ -2,6 +2,7 @@ package usecase_test
 
 import (
 	"context"
+	"sync"
 
 	"meh/core"
 	"meh/core/meh"
@@ -14,15 +15,30 @@ func (m *MockTX) Transact(ctx context.Context, f func(context.Context) (interfac
 	return f(ctx)
 }
 
+type Stat struct {
+	Call int
+}
+
 type MockMehService struct {
-	CreateFunc             func(ctx context.Context, meh *meh.Meh) (meh.ID, error)
+	lock                   sync.Mutex
+	CreataFuncStat         Stat
+	CreateFunc             func(ctx context.Context, meh *meh.Meh, stat Stat) (meh.ID, error)
 	AddToTimelineFunc      func(ctx context.Context, id meh.ID, followeeIDs []user.ID) error
 	ListMehsInTimelineFunc func(ctx context.Context, userID user.ID, pagination core.Pagination) (meh.Mehs, core.Pagination, error)
 }
 
 func (m *MockMehService) Create(ctx context.Context, mh *meh.Meh) (meh.ID, error) {
-	return m.CreateFunc(ctx, mh)
+	if m.CreateFunc == nil {
+		panic("CreateFunc is called but not set in MockMehService")
+	}
+
+	m.lock.Lock()
+	m.CreataFuncStat.Call++
+	m.lock.Unlock()
+
+	return m.CreateFunc(ctx, mh, m.CreataFuncStat)
 }
+
 func (m *MockMehService) AddToTimeline(ctx context.Context, id meh.ID, followeeIDs []user.ID) error {
 	return m.AddToTimelineFunc(ctx, id, followeeIDs)
 }
