@@ -11,6 +11,10 @@ type User struct {
 	ScreenName string
 }
 
+func (u *User) Hello() string {
+	return "hello"
+}
+
 func (is IDs) ToUint64s() []uint64 {
 	var res []uint64
 
